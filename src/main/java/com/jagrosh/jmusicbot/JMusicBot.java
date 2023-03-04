@@ -79,7 +79,7 @@ public class JMusicBot
         config.load();
         if(!config.isValid())
             return;
-        LOG.info("Loaded config from " + config.getConfigLocation());
+        LOG.info("Configuración cargada desde config.txt de: " + config.getConfigLocation());
         
         // set up the listener
         EventWaiter waiter = new EventWaiter();
@@ -87,8 +87,8 @@ public class JMusicBot
         Bot bot = new Bot(waiter, config, settings);
         
         AboutCommand aboutCommand = new AboutCommand(Color.BLUE.brighter(),
-                                "a music bot that is [easy to host yourself!](https://github.com/jagrosh/MusicBot) (v" + OtherUtil.getCurrentVersion() + ")",
-                                new String[]{"High-quality music playback", "FairQueue™ Technology", "Easy to host yourself"},
+                                "un bot de música fácil que es ¡Fácil de alojar por tí mismo! [(:flag_us: GitHub)](https://github.com/jagrosh/MusicBot) (v" + OtherUtil.getCurrentVersion() + ")",
+                                new String[]{"Reproducción de música en alta calidad", "Tecnología FairQueue™", "Facil de alojar"},
                                 RECOMMENDED_PERMS);
         aboutCommand.setIsAuthor(false);
         aboutCommand.setReplacementCharacter("\uD83C\uDFB6"); // 🎶
@@ -167,9 +167,9 @@ public class JMusicBot
             } 
             catch(Exception e) 
             {
-                LOG.error("Could not start GUI. If you are "
-                        + "running on a server or in a location where you cannot display a "
-                        + "window, please run in nogui mode using the -Dnogui=true flag.");
+                LOG.error("No se pudo iniciar la interfaz. Es posible que "
+                        + "estés ejecutando JMusicBot en un lugar sin una pantalla. "
+                        + "Sí ejecutas en Pterodactyl o en una VPS usa la flag \"-Dnogui=true\" antes del -jar.");
             }
         }
         
@@ -179,7 +179,7 @@ public class JMusicBot
             JDA jda = JDABuilder.create(config.getToken(), Arrays.asList(INTENTS))
                     .enableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE)
                     .disableCache(CacheFlag.ACTIVITY, CacheFlag.CLIENT_STATUS, CacheFlag.EMOTE, CacheFlag.ONLINE_STATUS)
-                    .setActivity(nogame ? null : Activity.playing("loading..."))
+                    .setActivity(nogame ? null : Activity.playing("Cargando..."))
                     .setStatus(config.getStatus()==OnlineStatus.INVISIBLE || config.getStatus()==OnlineStatus.OFFLINE 
                             ? OnlineStatus.INVISIBLE : OnlineStatus.DO_NOT_DISTURB)
                     .addEventListeners(cb.build(), waiter, new Listener(bot))
@@ -189,15 +189,15 @@ public class JMusicBot
         }
         catch (LoginException ex)
         {
-            prompt.alert(Prompt.Level.ERROR, "JMusicBot", ex + "\nPlease make sure you are "
-                    + "editing the correct config.txt file, and that you have used the "
-                    + "correct token (not the 'secret'!)\nConfig Location: " + config.getConfigLocation());
+            prompt.alert(Prompt.Level.ERROR, "JMusicBot", ex + "\nRevisa sí está todo bien en "
+                    + "el archivo config.txt. o no hayas puesto el token de bot correcto, "
+                    + "¡No el Sectet!\nUbicación de las configuraciones: " + config.getConfigLocation());
             System.exit(1);
         }
         catch(IllegalArgumentException ex)
         {
-            prompt.alert(Prompt.Level.ERROR, "JMusicBot", "Some aspect of the configuration is "
-                    + "invalid: " + ex + "\nConfig Location: " + config.getConfigLocation());
+            prompt.alert(Prompt.Level.ERROR, "JMusicBot", "Una parte de la configuración es inválida. "
+                    + ex + "\nUbicacion del archivo config: " + config.getConfigLocation());
             System.exit(1);
         }
     }
